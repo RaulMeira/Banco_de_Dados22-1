@@ -11,23 +11,49 @@ select * from Atleta;
 
 insert into Atleta values
 (null, 'raul', 'futebol', 5),
-(null, 'luan', 'baquete', 3),
-(null, 'ale', 'futebol', 9),
-(null, 'lendro', 'baquete', 5),
+(null, 'luan', 'basquete', 3),
+(null, 'ale', 'handebol', 9),
+(null, 'lendro', 'basquete', 5),
 (null, 'diogo', 'handebol', 10),
-(null, 'gui', 'futebol', 8),
+(null, 'gui', 'futebol', 8);
 
-• Inserir dados na tabela, procurando colocar mais de um atleta para cada
-modalidade e pelo menos 5 atletas.
-• Criar uma tabela chamada País para conter os dados: idPais (int e chave primária
-da tabela), nome (varchar, tamanho 30), capital (varchar, tamanho 40);
-• Inserir pelo menos 4 países na tabela país.
-Fazer a modelagem lógica conforme a regra de negócio:
-• 1 país tem 1 ou muitos atletas;
-• 1 atleta é de 1 e somente 1 país;
-Escreva e execute os comandos para:
-• Criar a chave estrangeira na tabela correspondente conforme modelagem;
-• Atualizar o país de todos os atletas;
-• Exibir os atletas e seu respectivo país;
-• Exibir apenas o nome do atleta e o nome do respectivo país;
-• Exibir os dados dos atletas, seus respectivos países, de uma determinada capital;
+create table País (
+idPais int primary key auto_increment,
+nome varchar (30),
+capital varchar (40)
+);
+insert into País values -- tem a chave estrangeira, vai transitar na tabela atleta
+(null, 'Brasil', 'Brasilia'),
+(null, 'Espanha', 'Madri'),
+(null, 'Portugal', 'Lisboa'),
+(null, 'Argentina', 'Buenos Aires'),
+(null, 'Estados Unidos', 'Washington');
+
+select * from Atleta;
+
+-- Criar a chave estrangeira na tabela correspondente conforme modelagem;
+alter table Atleta add column fkPaís int;
+alter table Atleta add foreign key (fkPaís)
+	references País (idPais);
+    
+-- Atualizar o país de todos os atletas;
+update Atleta set fkPaís = 	4 where idAtleta = 1;
+update Atleta set fkPaís = 	3 where idAtleta = 2;
+update Atleta set fkPaís = 	2 where idAtleta = 3;
+update Atleta set fkPaís = 	4 where idAtleta = 4;
+update Atleta set fkPaís = 	2 where idAtleta = 5;
+update Atleta set fkPaís = 	5 where idAtleta = 6;
+
+-- Exibir os atletas e seu respectivo país;
+select * from Atleta as a
+	join País as p on p.idPais = a.fkPaís;
+
+-- Exibir apenas o nome do atleta e o nome do respectivo país (Argentina);
+select a.nome, p.nome from Atleta as a
+	join País as p on p.idPais = a.fkPaís
+    WHERE p.nome = 'Argentina'; 
+
+-- Exibir os dados dos atletas, seus respectivos países, de uma determinada capital (Madri);
+select * from Atleta
+	join País on País.idPais = Atleta.fkPaís
+    where País.capital = 'Madri';

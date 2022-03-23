@@ -55,4 +55,3 @@ select concat(andar,lado) as NomeSala from sala; -- ao inves de aparecer no sele
 
 select * from Notebook as note -- apelido do notebook virou "note",
 								-- o apelido só fica no comando
-
